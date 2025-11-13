@@ -10,6 +10,7 @@ void main() {
   runApp(const FinViewLiteApp());
 }
 
+// Determines the initial screen (Portfolio or Login) based on user login status using FutureBuilder.
 class FinViewLiteApp extends StatelessWidget {
   const FinViewLiteApp({super.key});
 
@@ -36,6 +37,7 @@ class FinViewLiteApp extends StatelessWidget {
   }
 }
 
+// login screen to set username and logged_in status in shared preferences.
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
   @override
@@ -63,6 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  // Login screen UI with username input and login button.
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -164,6 +167,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 }
 
+// Portfolio screen displaying portfolio data with charts and animations.
 class PortfolioScreen extends StatefulWidget {
   const PortfolioScreen({super.key});
 
@@ -184,7 +188,7 @@ class _PortfolioScreenState extends State<PortfolioScreen>
   List<Map> currentHoldings = [];
   int? selectedPieIndex;
   String? user;
-
+  // Initialize state, load portfolio data, and set up animation controllers.
   @override
   void initState() {
     super.initState();
@@ -210,6 +214,7 @@ class _PortfolioScreenState extends State<PortfolioScreen>
     setState(() {});
   }
 
+  // Dispose animation controllers to free resources.
   @override
   void dispose() {
     listAnimationController.dispose();
@@ -248,7 +253,7 @@ class _PortfolioScreenState extends State<PortfolioScreen>
       portfolioData = data;
       currentHoldings = sortedHoldings();
     });
-
+    // Animate list items on load
     WidgetsBinding.instance.addPostFrameCallback((_) {
       for (int i = 0; i < currentHoldings.length; i++) {
         listKey.currentState?.insertItem(
@@ -276,6 +281,7 @@ class _PortfolioScreenState extends State<PortfolioScreen>
         (holding['units'] as num).toDouble();
   }
 
+  // Returns sorted holdings based on the selected criterion.
   List<Map> sortedHoldings() {
     List<Map> holdings = List<Map>.from(portfolioData?['holdings'] ?? []);
     holdings.sort((a, b) {
@@ -292,6 +298,7 @@ class _PortfolioScreenState extends State<PortfolioScreen>
     return holdings;
   }
 
+  // Dark mode toggle widget with animation.
   Widget buildDarkModeToggle() {
     return Padding(
       padding: const EdgeInsets.only(right: 12.0),
@@ -321,6 +328,7 @@ class _PortfolioScreenState extends State<PortfolioScreen>
     );
   }
 
+  // Returns display toggle widget with animation.
   Widget buildReturnsToggle() {
     return Row(
       children: [
@@ -363,6 +371,7 @@ class _PortfolioScreenState extends State<PortfolioScreen>
     );
   }
 
+  //  Returns sorting dropdown widget with animation and reordering logic.
   Widget buildSortingDropdown() {
     final Map<String, IconData> icons = {
       'value': Icons.pie_chart_rounded,
@@ -449,6 +458,7 @@ class _PortfolioScreenState extends State<PortfolioScreen>
     );
   }
 
+  //  Builds individual holding item with slide and fade animations.
   Widget buildHoldingItem(
     BuildContext context,
     int index,
@@ -465,7 +475,7 @@ class _PortfolioScreenState extends State<PortfolioScreen>
     final gainToShow = showPercentage
         ? '${(gain / originalCost * 100).toStringAsFixed(2)}%'
         : '₹${gain.toStringAsFixed(2)}';
-
+    // Slide and fade transition for the holding item.
     return SlideTransition(
       position: Tween<Offset>(
         begin: Offset(0, 0.08),
@@ -532,6 +542,7 @@ class _PortfolioScreenState extends State<PortfolioScreen>
     );
   }
 
+  //    Builds the list of holdings with a maximum height constraint.
   Widget buildHoldingsList() {
     return Container(
       constraints: BoxConstraints(
@@ -546,6 +557,7 @@ class _PortfolioScreenState extends State<PortfolioScreen>
     );
   }
 
+  // Builds the legend for the holdings pie chart.
   Widget buildHoldingsLegend(double portfolioValue) {
     final List<Color> colorPalette = isDarkMode
         ? [
@@ -625,6 +637,7 @@ class _PortfolioScreenState extends State<PortfolioScreen>
     );
   }
 
+  //  Builds the professional styled pie chart for holdings distribution.
   Widget buildProfessionalPieChart(double portfolioValue) {
     final List<Color> colorPalette = isDarkMode
         ? [
@@ -647,7 +660,7 @@ class _PortfolioScreenState extends State<PortfolioScreen>
             Colors.lime,
             Colors.redAccent,
           ];
-
+    // Pie chart with interactive sections and badges.
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -738,6 +751,7 @@ class _PortfolioScreenState extends State<PortfolioScreen>
             ),
           ),
         ),
+        // Legend below the pie chart
         buildHoldingsLegend(portfolioValue),
         if (selectedPieIndex != null &&
             selectedPieIndex! >= 0 &&
@@ -790,6 +804,7 @@ class _PortfolioScreenState extends State<PortfolioScreen>
     );
   }
 
+  // Builds the finance-themed full screen background with gradient and overlay image.
   Widget buildFinanceBgFullScreen() {
     return Container(
       width: double.infinity,
@@ -820,6 +835,7 @@ class _PortfolioScreenState extends State<PortfolioScreen>
     );
   }
 
+  // Builds the portfolio summary card with value and gain/loss information.
   Widget buildPortfolioSummary(
     double portfolioValue,
     double totalGain,
@@ -846,7 +862,7 @@ class _PortfolioScreenState extends State<PortfolioScreen>
               offset: Offset(0, 6),
             ),
           ],
-        ),
+        ), // Gradient background for the summary card
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 24.0, horizontal: 12.0),
           child: Row(
@@ -951,6 +967,7 @@ class _PortfolioScreenState extends State<PortfolioScreen>
     );
   }
 
+  // Logout function that clears user data and navigates to login screen.
   Future<void> _logout() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.clear();
@@ -960,6 +977,7 @@ class _PortfolioScreenState extends State<PortfolioScreen>
     );
   }
 
+  // Build method that constructs the main portfolio screen with theming and data display.
   @override
   Widget build(BuildContext context) {
     final ThemeData lightTheme = ThemeData(
@@ -977,7 +995,7 @@ class _PortfolioScreenState extends State<PortfolioScreen>
       ),
       textTheme: GoogleFonts.poppinsTextTheme(ThemeData.light().textTheme),
     );
-
+    // Dark theme definition with colors and styles.
     final ThemeData darkTheme = ThemeData(
       brightness: Brightness.dark,
       primaryColor: Color(0xFF222C35),
@@ -1020,6 +1038,7 @@ class _PortfolioScreenState extends State<PortfolioScreen>
         .toDouble();
     final totalGain = (portfolioData!['total_gain'] as num).toDouble();
 
+    // Main scaffold with app bar, portfolio summary, holdings list, and pie chart.
     return MaterialApp(
       theme: lightTheme,
       darkTheme: darkTheme,
