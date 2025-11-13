@@ -14,6 +14,12 @@ FinView Lite is a Flutter-based mobile and web dashboard app designed to provide
 - Uses local JSON file (`assets/portfolio.json`) to simulate API data.
 - Includes mock authentication with username entry and persistent login state using Shared Preferences.
 
+- ![Screenshots](https://drive.google.com/drive/folders/1-faj3C-OQLnRDSnlk8Zs8-5mzalv0uqq?usp=drive_link)
+
+- [Demo Video](https://drive.google.com/file/d/12C9Re2oSG-xyKIP1qRi_nMtQj4UjoDtc/view?usp=drive_link)
+
+
+
 ## Setup Instructions
 
 1. Ensure you have [Flutter 3.35.7](https://docs.flutter.dev/release/whats-new) installed on your system.
