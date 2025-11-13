@@ -1108,7 +1108,7 @@ class _PortfolioScreenState extends State<PortfolioScreen>
                               totalGain,
                               isDarkMode,
                             ),
-                            const SizedBox(height: 8), // Tighter gap after fix
+                            const SizedBox(height: 8),
                             Material(
                               elevation: 8,
                               borderRadius: BorderRadius.circular(16),
